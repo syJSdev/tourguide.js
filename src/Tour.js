@@ -165,8 +165,6 @@ export default class Tour {
   _injectStyles() {
     // inject colors
     this._removeStyles();
-    // eslint-disable-next-line no-console
-    console.log(this._options.colors);
     const colors = u(
       `<style id="tourguide-color-schema">${colorObjToStyleVarString(
         this._options.colors,
