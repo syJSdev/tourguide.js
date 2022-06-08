@@ -78,8 +78,8 @@ export function getViewportRect(element) {
       scrollY: rootEl.scrollTop,
       rootWidth: rect.width,
       rootHeight: rect.height,
-      rootTop: rect.top,
-      rootLeft: rect.left,
+      rootTop: rect.top + window.pageYOffset,
+      rootLeft: rect.left + window.pageXOffset,
     };
   } catch (error) {
     console.error(error);

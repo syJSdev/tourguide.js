@@ -115,8 +115,7 @@ describe('Tourguide', function () {
       const _options = Object.keys(tourguide._options);
 
       // these are the default keys that should present in tourguide._options
-      const tourConstructorOptions = ['root', 'selector', 'animationspeed', 'padding', 'steps', 'src', 'restoreinitialposition',
-        'preloadimages', 'request', 'onStart', 'onComplete', 'onStep', 'onAction', 'onStop', 'colors', 'keyboardNavigation'];
+      const tourConstructorOptions = ["root", "selector", "animationspeed", "padding", "steps", "src", "restoreinitialposition", "preloadimages", "request", "align", "keyboardNavigation", "onStart", "onStop", "onComplete", "onStep", "onAction", "colors"];
 
       // Check that all options returned from constructor are as expected
       const difference = _.difference(_options, tourConstructorOptions);
