@@ -66,7 +66,7 @@ export default class Step {
                   </svg>
                 </span>`}
                 ${this.context._steps.length > 1 ? `<div class="guided-tour-step-bullets">
-                    <ul>${this.context._steps.map((step, i) => `<li  title="Go to step ${i + 1}" data-index="${i}" class="${step.index < this.index ? "complete" : step.index == this.index ? "current" : ""}"></li>`).join("")}</ul>
+                    <ul>${this.context._steps.map((step, i) => `<li  title="Go to step ${i + 1}" data-index="${i}" class="${step.index < this.index ? "complete" : step.index === this.index ? "current" : ""}"></li>`).join("")}</ul>
                 </div>` : ""}
             </div>`);
       footer.find(".guided-tour-step-button-prev").on("click", this.context.previous);
@@ -112,7 +112,7 @@ export default class Step {
 
     let data;
     if (!(step instanceof HTMLElement)) {
-      if(!(step.hasOwnProperty("title") && step.hasOwnProperty("content") && step.hasOwnProperty("step"))) {
+      if(!(Object.prototype.hasOwnProperty.call(step, "title") && Object.prototype.hasOwnProperty.call(step, "content") && Object.prototype.hasOwnProperty.call(step, "step"))) {
         throw new Error(
           "invalid step parameter:\n" +
           JSON.stringify(step, null, 2) + "\n" +
