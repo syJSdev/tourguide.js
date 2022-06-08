@@ -26,7 +26,7 @@ export function parseNumber(number, parseTo = "float") {
 
 export function getDataContents(data = "", defaults = {}) {
   const parts = data.split(";");
-  let result = { ...defaults };
+  const result = { ...defaults };
   parts.forEach((part) => {
     const entries = (part || "").split(":");
     result[(entries[0] || "").trim()] = (entries[1] || "").trim();
@@ -116,17 +116,7 @@ export function getStyle(element, css3Prop) {
   return "";
 }
 
-const allowedProperties = [
-  "top",
-  "left",
-  "right",
-  "bottom",
-  "width",
-  "height",
-  "maxWidth",
-  "minWidth",
-  "transform",
-];
+const allowedProperties = ["top", "left", "right", "bottom", "width", "height", "maxWidth", "minWidth", "transform"];
 /**
  * convert the color object to the sets of css variables.
  * @important all style properties will merge with current styles!
@@ -144,35 +134,35 @@ export function setStyle(element, styleObj) {
     .forEach(([key, val]) => {
       const value = typeof val === "number" ? `${val}px` : val;
       switch (key) {
-      case "top":
-        style.top = value;
-        break;
-      case "left":
-        style.left = value;
-        break;
-      case "right":
-        style.right = value;
-        break;
-      case "bottom":
-        style.bottom = value;
-        break;
-      case "width":
-        style.width = value;
-        break;
-      case "height":
-        style.height = value;
-        break;
-      case "maxWidth":
-        style.maxWidth = value;
-        break;
-      case "minWidth":
-        style.minWidth = value;
-        break;
-      case "transform":
-        style.transform = value;
-        break;
-      default:
-        break;
+        case "top":
+          style.top = value;
+          break;
+        case "left":
+          style.left = value;
+          break;
+        case "right":
+          style.right = value;
+          break;
+        case "bottom":
+          style.bottom = value;
+          break;
+        case "width":
+          style.width = value;
+          break;
+        case "height":
+          style.height = value;
+          break;
+        case "maxWidth":
+          style.maxWidth = value;
+          break;
+        case "minWidth":
+          style.minWidth = value;
+          break;
+        case "transform":
+          style.transform = value;
+          break;
+        default:
+          break;
       }
     });
 }
@@ -193,7 +183,7 @@ export function colorObjToStyleVarString(colors, prefix = "--tourguide", selecto
     const splitedNameArray = [prefix];
     let prevIndex = 0;
     for (let i = 0; i < key.length; i += 1) {
-      if ("A" <= key[i] && key[i] <= "Z") {
+      if (key[i] >= "A" && key[i] <= "Z") {
         splitedNameArray.push(key.substring(prevIndex, i).toLowerCase());
         prevIndex = i;
       }
@@ -231,16 +221,16 @@ export function animateScroll(scrollItems, time) {
     if ("requestAnimationFrame" in window) {
       return window.requestAnimationFrame(task);
     }
-  
+
     setTimeout(task, 16);
   }
-  
+
   function ease(v) {
     return 1 - Math.pow(1 - v, v / 2);
   }
 
   function animate(el, x, y) {
-    if(!el) {
+    if (!el) {
       console.warn(`target element ${el} not found, skip`);
       return;
     }
@@ -252,7 +242,7 @@ export function animateScroll(scrollItems, time) {
     const differenceX = x - el.scrollLeft;
     const differenceY = y - el.scrollTop;
 
-    setElementScroll( el, x - differenceX * easeValue, y - differenceY * easeValue);
+    setElementScroll(el, x - differenceX * easeValue, y - differenceY * easeValue);
 
     if (diffTime >= time) {
       setElementScroll(el, x, y);
@@ -281,10 +271,7 @@ export function getScrollCoordinates(target) {
     if (!targetUEl.first()) targetUEl = false;
     try {
       const element = targetUEl.first();
-      if (
-        element.scrollHeight !== element.height ||
-        element.scrollWidth !== element.width
-      ) {
+      if (element.scrollHeight !== element.height || element.scrollWidth !== element.width) {
         scrollItems.push({
           element: targetUEl.first(),
           x: targetUEl.first().scrollLeft,

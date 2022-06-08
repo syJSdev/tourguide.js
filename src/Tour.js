@@ -2,12 +2,7 @@ import u from "umbrellajs";
 import Icons from "./icons";
 import Step from "./step";
 import Overlay from "./overlay";
-import {
-  animateScroll,
-  clamp,
-  colorObjToStyleVarString,
-  getScrollCoordinates,
-} from "./utils";
+import { animateScroll, clamp, colorObjToStyleVarString, getScrollCoordinates } from "./utils";
 
 import "../scss/style.scss";
 
@@ -27,9 +22,7 @@ function isEventAttrbutesMatched(event, keyOption, type = "keyup") {
     } else if (typeof keyOption === "object") {
       eventAttrsMap = { ...keyOption, type };
     } else {
-      throw new Error(
-        "keyboardNavigation option invalid. should be predefined object or false. Check documentation."
-      );
+      throw new Error("keyboardNavigation option invalid. should be predefined object or false. Check documentation.");
     }
 
     const eventAttrs = Object.entries(eventAttrsMap).map(([key, value]) => ({
@@ -46,24 +39,31 @@ export default class Tour {
   get currentstep() {
     return this._steps[this._current];
   }
+
   get length() {
     return this._steps.length;
   }
+
   get steps() {
     return this._steps.map((step) => step.toJSON());
   }
+
   get hasnext() {
     return this.nextstep !== this._current;
   }
+
   get nextstep() {
     return clamp(this._current + 1, 0, this.length - 1);
   }
+
   get previousstep() {
     return clamp(this._current - 1, 0);
   }
+
   get options() {
     return this._options;
   }
+
   constructor(options = {}) {
     const defaultKeyNavOptions = {
       next: "ArrowRight",
@@ -125,21 +125,17 @@ export default class Tour {
     this._ready = false;
     this._initialposition = null;
     this._injectIcons();
-    if (
-      typeof this._options.steps === "object" &&
-      Array.isArray(this._options.steps)
-    ) {
+    if (typeof this._options.steps === "object" && Array.isArray(this._options.steps)) {
       this._stepsSrc = StepsSource.JSON;
       this._steps = this._options.steps.map((o) => new Step(o, this));
       this._ready = true;
     } else if (typeof this._options.src === "string") {
       this._stepsSrc = StepsSource.REMOTE;
-      fetch(new Request(this._options.src, this._options.request)).then(
-        (response) =>
-          response.json().then((data) => {
-            this._steps = data.map((o) => new Step(o, this));
-            this._ready = true;
-          })
+      fetch(new Request(this._options.src, this._options.request)).then((response) =>
+        response.json().then((data) => {
+          this._steps = data.map((o) => new Step(o, this));
+          this._ready = true;
+        })
       );
     } else if (u(this._options.selector).length > 0) {
       this._stepsSrc = StepsSource.DOM;
@@ -157,61 +153,43 @@ export default class Tour {
     this.action = this.action.bind(this);
     this._keyboardHandler = this._keyboardHandler.bind(this);
   }
+
   _injectIcons() {
     if (u("#GuidedTourIconSet").length === 0) {
       u("body").append(u(Icons));
     }
   }
+
   _injectStyles() {
     // inject colors
     this._removeStyles();
-    const colors = u(
-      `<style id="tourguide-color-schema">${colorObjToStyleVarString(
-        this._options.colors,
-        "--tourguide"
-      )}</style>`
-    );
+    const colors = u(`<style id="tourguide-color-schema">${colorObjToStyleVarString(this._options.colors, "--tourguide")}</style>`);
     u(":root > head").append(colors);
   }
+
   _removeStyles() {
     const colorStyleTags = u("style#tourguide-color-schema");
     if (colorStyleTags.length > 0) {
       colorStyleTags.remove();
     }
   }
+
   _keyboardHandler(event) {
-    if (
-      this._options.keyboardNavigation.next &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.next)
-    ) {
+    if (this._options.keyboardNavigation.next && isEventAttrbutesMatched(event, this._options.keyboardNavigation.next)) {
       this.next();
-    } else if (
-      this._options.keyboardNavigation.prev &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.prev)
-    ) {
+    } else if (this._options.keyboardNavigation.prev && isEventAttrbutesMatched(event, this._options.keyboardNavigation.prev)) {
       this.previous();
-    } else if (
-      this._options.keyboardNavigation.first &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.first)
-    ) {
+    } else if (this._options.keyboardNavigation.first && isEventAttrbutesMatched(event, this._options.keyboardNavigation.first)) {
       this.go(0);
-    } else if (
-      this._options.keyboardNavigation.last &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.last)
-    ) {
+    } else if (this._options.keyboardNavigation.last && isEventAttrbutesMatched(event, this._options.keyboardNavigation.last)) {
       this.go(this._steps.length - 1);
-    } else if (
-      this._options.keyboardNavigation.stop &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.stop)
-    ) {
+    } else if (this._options.keyboardNavigation.stop && isEventAttrbutesMatched(event, this._options.keyboardNavigation.stop)) {
       this.stop();
-    } else if (
-      this._options.keyboardNavigation.complete &&
-      isEventAttrbutesMatched(event, this._options.keyboardNavigation.complete)
-    ) {
+    } else if (this._options.keyboardNavigation.complete && isEventAttrbutesMatched(event, this._options.keyboardNavigation.complete)) {
       this.complete();
     }
   }
+
   init() {
     this.reset();
     u(this._options.root).addClass("guided-tour");
@@ -224,6 +202,7 @@ export default class Tour {
     this._steps[0].first = true;
     this._steps[this.length - 1].last = true;
   }
+
   reset() {
     if (this._active) this.stop();
     if (this._stepsSrc === StepsSource.DOM) {
@@ -231,6 +210,7 @@ export default class Tour {
     }
     this._current = 0;
   }
+
   start(step = 0) {
     if (this._ready) {
       this._injectStyles();
@@ -248,13 +228,7 @@ export default class Tour {
         this._options.onStart(this._options);
 
         if (this._options.keyboardNavigation) {
-          if (
-            Object.prototype.toString.call(this._options.keyboardNavigation) !==
-            "[object Object]"
-          )
-            throw new Error(
-              "keyboardNavigation option invalid. should be predefined object or false. Check documentation."
-            );
+          if (Object.prototype.toString.call(this._options.keyboardNavigation) !== "[object Object]") throw new Error("keyboardNavigation option invalid. should be predefined object or false. Check documentation.");
 
           u(":root").on("keyup", this._keyboardHandler);
         }
@@ -267,6 +241,7 @@ export default class Tour {
       }, 50);
     }
   }
+
   action(event, action) {
     if (this._active) {
       const { currentstep } = this;
@@ -284,24 +259,24 @@ export default class Tour {
         this.complete();
       }
 
-      if (
-        this._options.onAction &&
-        typeof this._options.onAction === "function"
-      ) {
+      if (this._options.onAction && typeof this._options.onAction === "function") {
         this._options.onAction(event, currentstep.toJSON(), action);
       }
     }
   }
+
   next() {
     if (this._active) {
       this.go(this.nextstep, "next");
     }
   }
+
   previous() {
     if (this._active) {
       this.go(this.previousstep, "previous");
     }
   }
+
   go(step, type) {
     if (this._active && this._current !== step) {
       this.currentstep.hide();
@@ -310,6 +285,7 @@ export default class Tour {
       this._options.onStep(this.currentstep, type);
     }
   }
+
   stop() {
     this._removeStyles();
     if (this._active) {
@@ -327,6 +303,7 @@ export default class Tour {
       this._options.onStop(this._options);
     }
   }
+
   complete() {
     if (this._active) {
       this.stop();
