@@ -1,0 +1,14 @@
+# Coverage directory used by tools like istanbul
+coverage
+
+# Compiled
+build/
+dist/
+/tourguide.*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# TypeScript v1 declaration files
+typings/
