@@ -61,7 +61,3 @@ typings/
 .next
 
 dist/
-
-# package lock files
-yarn.lock
-package-lock.json
