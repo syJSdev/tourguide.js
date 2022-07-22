@@ -78,8 +78,8 @@ export function getViewportRect(element) {
       scrollY: rootEl.scrollTop,
       rootWidth: rect.width,
       rootHeight: rect.height,
-      rootTop: rect.top + window.pageYOffset,
-      rootLeft: rect.left + window.pageXOffset,
+      rootTop: rect.top,
+      rootLeft: rect.left,
     };
   } catch (error) {
     console.error(error);
@@ -183,7 +183,7 @@ export function colorObjToStyleVarString(colors, prefix = "--tourguide", selecto
     const splitedNameArray = [prefix];
     let prevIndex = 0;
     for (let i = 0; i < key.length; i += 1) {
-      if (key[i] >= "A" && key[i] <= "Z") {
+      if ("A" <= key[i] && key[i] <= "Z") {
         splitedNameArray.push(key.substring(prevIndex, i).toLowerCase());
         prevIndex = i;
       }
