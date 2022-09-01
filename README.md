@@ -6,7 +6,7 @@
 
 ### Fiddle with It
 
-Want to see how it works right away? [Try on JSFiddle](jsfiddle.net/276dzfxo)
+Want to see how it works right away? [Try on JSFiddle](https://jsfiddle.net/276dzfxo)
 
 ## Install Tourguide.js
 
